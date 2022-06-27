@@ -26,11 +26,12 @@ func (m *PublishMessage) setFixHeader() {
 
 func (m *PublishMessage) setVariableHeader() {
 	var length int16
-	length = int16(len(m.Topic))
+	topicBytes := []byte(m.Topic)
+	length = int16(len(topicBytes))
 	packetID := rand.Int()
 	m.SetPacketID(int16(packetID))
 	m.variableHeader = append(m.variableHeader, int16ToBytes(length)...)
-	m.variableHeader = append(m.variableHeader, []byte(m.Topic)...)
+	m.variableHeader = append(m.variableHeader, topicBytes...)
 	m.variableHeader = append(m.variableHeader, int16ToBytes(m.GetPacketID())...)
 	m.variableHeader = append(m.variableHeader, byte(0))
 }

@@ -29,9 +29,10 @@ func (m *SubscribeMessage) setVariableHeader() {
 
 func (m *SubscribeMessage) setPayload() {
 	var length int16
-	length = int16(len(m.Topic))
+	topicBytes := []byte(m.Topic)
+	length = int16(len(topicBytes))
 	m.payload = append(m.payload, int16ToBytes(length)...)
-	m.payload = append(m.payload, []byte(m.Topic)...)
+	m.payload = append(m.payload, topicBytes...)
 	m.payload = append(m.payload, byte(2))
 }
 

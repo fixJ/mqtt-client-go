@@ -49,9 +49,10 @@ func (m *ConnectMessage) setVariableHeader() {
 func (m *ConnectMessage) setPayload() {
 	var length int16
 	//设置client ID
-	length = int16(len(m.ClientID))
+	clientIDBytes := []byte(m.ClientID)
+	length = int16(len(clientIDBytes))
 	m.payload = append(m.payload, int16ToBytes(length)...)
-	m.payload = append(m.payload, []byte(m.ClientID)...)
+	m.payload = append(m.payload, clientIDBytes...)
 
 	if m.NeedAuth {
 		//设置username
