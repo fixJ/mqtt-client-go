@@ -2,21 +2,18 @@ package main
 
 import (
 	"fmt"
+	"mqtt-client-go/pkg/client"
 	"mqtt-client-go/pkg/message"
-	"net"
 )
 
 func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:1883")
+	producer, err := client.NewProducer("127.0.0.1", "1883", "producer", false, "", "")
 	if err != nil {
-		fmt.Println(err)
 		return
 	}
-	cm := message.NewConnectMessage("producer", false, "", "")
-	conn.Write(cm.Build())
 	for i := 1; i <= 10; i++ {
 		pm := message.NewPublishMessage("abc", fmt.Sprintf("this message is NO.%d", i))
-		conn.Write(pm.Build())
+		producer.Publish(pm)
 	}
-	conn.Close()
+	producer.Close()
 }
